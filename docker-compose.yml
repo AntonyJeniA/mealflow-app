@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  food-booking-app:
+    build: .
+    container_name: mealflow_app
+    ports:
+      - "8888:80"
+    volumes:
+      - .:/usr/share/nginx/html # Hot-reloading for development
+    restart: always
+
+networks:
+  default:
+    name: mealflow_network

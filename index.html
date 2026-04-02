@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealFlow | Monthly Meal Subscription & Booking</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Subscribe to personalized monthly meal plans. Choose from Basic, Healthy, and Choice plans with breakfast, lunch, and dinner options.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Header/Nav -->
+    <header class="container" style="padding: 1.5rem 0; display: flex; justify-content: space-between; align-items: center;">
+        <div class="logo" style="display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--slate-900);">
+            <div style="background: var(--slate-900); padding: 5px; border-radius: 8px;"><img src="assets/logo.png" alt="MealFlow" style="width: 30px; height: 30px; object-fit: contain;"></div>
+            MealFlow <span style="font-size: 0.875rem; font-weight: 500; color: var(--slate-500); background: var(--slate-100); padding: 2px 10px; border-radius: 100px; margin-left: 5px; border: 1px solid var(--slate-200);">System Active</span>
+        </div>
+        <nav>
+            <a href="admin.html" class="btn btn-outline" style="width: auto; padding: 0.5rem 1rem;">Admin Portal</a>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" style="background-image: url('assets/hero_bg.png'); background-size: cover; background-position: center;">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1>Subscription Management System</h1>
+            <p>A professional-grade platform for monthly meal plan management. Automated booking, real-time Firestore synchronization, and secure administrative controls.</p>
+            <a href="#plans" class="btn btn-primary" style="width: auto; padding: 1.25rem 2.5rem; font-size: 1.125rem;">Initialize Booking Process</a>
+        </div>
+    </section>
+
+    <!-- Menu Display -->
+    <section id="menu" class="container">
+        <div class="section-title">
+            <h2>Weekly Menu Selection</h2>
+            <p>Freshly curated items for the upcoming week</p>
+        </div>
+        <div class="menu-grid" id="menu-container">
+            <!-- Dynamically populated via JS -->
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section id="plans" style="background-color: var(--slate-100);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Choose Your Plan</h2>
+                <p>Select a subscription that fits your lifestyle</p>
+            </div>
+            <div class="plan-grid">
+                <!-- Basic Plan -->
+                <div class="plan-card">
+                    <h3>Basic Plan</h3>
+                    <div class="plan-price">₹2000<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>5 days a week (Mon-Fri)</li>
+                        <li>Standard nutritional balance</li>
+                        <li>Eco-friendly packaging</li>
+                        <li>Email support</li>
+                    </ul>
+                    <button type="button" class="btn btn-outline" onclick="openBooking('Basic Plan', 2000)">Subscribe / Book Plan</button>
+                </div>
+                <!-- Healthy Plan (Featured) -->
+                <div class="plan-card premium">
+                    <div style="background: var(--primary); color: white; padding: 0.25rem 1rem; position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); border-radius: 100px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase;">Most Popular</div>
+                    <h3>Healthy Plan</h3>
+                    <div class="plan-price">₹3000<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>7 days a week</li>
+                        <li>High-protein/Low-carb options</li>
+                        <li>Probiotic additions</li>
+                        <li>Personal nutrition tracker</li>
+                    </ul>
+                    <button type="button" class="btn btn-primary" onclick="openBooking('Healthy Plan', 3000)">Subscribe / Book Plan</button>
+                </div>
+                <!-- Choice Plan -->
+                <div class="plan-card">
+                    <h3>Choice Plan</h3>
+                    <div class="plan-price">₹4000<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>7 days a week + Dessert</li>
+                        <li>Customizable meal choices</li>
+                        <li>Premium ingredients</li>
+                        <li>Priority breakfast delivery</li>
+                    </ul>
+                    <button type="button" class="btn btn-outline" onclick="openBooking('Choice Plan', 4000)">Subscribe / Book Plan</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="padding: 4rem 0; text-align: center; color: var(--slate-500); border-top: 1px solid var(--slate-200);">
+        <p>© 2026 MealFlow System. All rights reserved.</p>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <span class="modal-close" onclick="closeBooking()">&times;</span>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 id="modal-title">Complete Your Booking</h2>
+                <p style="color: var(--slate-500); font-size: 0.875rem;">Selected Plan: <span id="selected-plan-text" style="color: var(--primary); font-weight: 700;"></span></p>
+            </div>
+            <form id="booking-form">
+                <input type="hidden" id="selected-plan" name="plan">
+                <input type="hidden" id="plan-price" name="price">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" pattern="[A-Za-z\s]{3,}" title="Please enter at least 3 alphabetic characters." required>
+                    <div class="error-msg" id="name-error">Please enter your full name (Min 3 letters).</div>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" placeholder="9876543210" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number." required>
+                    <div class="error-msg" id="phone-error">Please enter a valid 10-digit phone number.</div>
+                </div>
+                <div class="form-group">
+                    <label for="start-date">Start Date</label>
+                    <input type="date" id="start-date" name="startDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Meal preference <span style="font-weight: 400; color: var(--slate-500);">(optional)</span></label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                        <label style="font-weight: 400; display: flex; align-items: center; gap: 0.5rem; width: auto;">
+                            <input type="radio" name="preference" value="" checked> No preference
+                        </label>
+                        <label style="font-weight: 400; display: flex; align-items: center; gap: 0.5rem; width: auto;">
+                            <input type="radio" name="preference" value="Veg"> Veg
+                        </label>
+                        <label style="font-weight: 400; display: flex; align-items: center; gap: 0.5rem; width: auto;">
+                            <input type="radio" name="preference" value="Non-Veg"> Non-Veg
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit-btn" style="margin-top: 1rem;">Subscribe / Book Plan</button>
+            </form>
+            <div id="booking-status" style="margin-top: 1.5rem; text-align: center; display: none;">
+                <p id="status-message" style="font-weight: 600;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs (Disabled to prevent console errors due to inactive Firebase Project) -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script> -->
+    
+    <script src="js/firebase-config.js?v=3"></script>
+    <script src="js/app.js?v=3"></script>
+</body>
+</html>
